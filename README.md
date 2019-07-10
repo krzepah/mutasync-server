@@ -3,13 +3,13 @@
 </p>
 
 # State Management Server
-> Express REST API with JWT Authentication for State Management with support for sqlite, mysql, and postgresql 
+> Saves your mutastore state online.
 
-Sync mutastore state online.
+Under the hood it's an Express REST API with JWT Authentication with support for sqlite, mysql, and postgresql. Provided a mutation system it then saves up your customers app's state.
 
 Works with [storesync](https://github.com/krzepah/StoreSync) & [mutastore](https://github.com/krzepah/mutastore)
 
-:construction_worker: Software is currently in developpement
+:construction_worker: Software is currently in developpement.
 
 ## LICENSE
 
