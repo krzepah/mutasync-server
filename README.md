@@ -1,6 +1,11 @@
-# express-rest-api-boilerplate
+<p align="center">
+  <img src="https://image.flaticon.com/icons/svg/123/123986.svg" width="300" height="300" alt="unistore">
+</p>
 
-> Express REST API with JWT Authentication and support for sqlite, mysql, and postgresql
+# State Management Server
+> Express State Management REST API with JWT Authentication and support for sqlite, mysql, and postgresql for [StoreSync](https://github.com/krzepah/StoreSync)
+
+### :exclamation: :boom: :construction_worker:  DO NOT USE THIS IN PRODUCTION YET ; **security issues** are known & afterwards audit must be made before a release candidate. Until then this software is in Alpha state and we do NOT recomend it's usage except for it's developpement and the correction of it's security issues
 
 - authentication via [JWT](https://jwt.io/)
 - routes mapping via [express-routes-mapper](https://github.com/aichbauer/express-routes-mapper)
@@ -576,4 +581,8 @@ Optional:
 
 ## LICENSE
 
-MIT © Lukas Aichbauer
+mutasync-server logo by [Freepik](https://www.freepik.com/) from [flaticon.com](https://www.flaticon.com) is licensed by [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/)
+
+Forked from [express-rest-api-boilerplate](https://github.com/aichbauer/express-rest-api-boilerplate?fbclid=IwAR22_WDEZ12016QGyiwWpTaS__Xg62BhJIVW_bIyxZ2DCGp1OFPeTL4j-v0) by aichbauer
+
+[MIT License](https://oss.ninja/mit/krzepah) © Patrick Borowy
