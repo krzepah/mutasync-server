@@ -9,7 +9,7 @@ Sync mutastore state online.
 
 Works with [storesync](https://github.com/krzepah/StoreSync) & [mutastore](https://github.com/krzepah/mutastore)
 
-:construction_worker: Software is currently in devloppement
+:construction_worker: Software is currently in developpement
 
 ## LICENSE
 
