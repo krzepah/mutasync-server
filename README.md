@@ -3,7 +3,7 @@
 </p>
 
 # State Management Server
-> Saves your mutastore state online.
+> Saves your customers apps state
 
 Under the hood it's an Express REST API with JWT Authentication with support for sqlite, mysql, and postgresql. Provided a mutation system it then saves up your customers app's state.
 
