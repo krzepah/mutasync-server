@@ -1,6 +1,10 @@
+/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "mutations" }] */
+
 const User = require('../models/User');
 const authService = require('../services/auth.service');
 const bcryptService = require('../services/bcrypt.service');
+const { mutations } = require('../../custom/mutations');
+
 
 const UserController = () => {
   const register = async (req, res) => {
