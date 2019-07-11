@@ -1,7 +1,9 @@
+/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "defaultStore" }] */
+
 const Sequelize = require('sequelize');
 const bcryptService = require('../services/bcrypt.service');
-
 const sequelize = require('../../config/database');
+const { defaultStore } = require('../../custom/mutations');
 
 const hooks = {
   beforeCreate(user) {
