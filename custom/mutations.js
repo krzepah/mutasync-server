@@ -1,10 +1,6 @@
 
 const { merge, concat } = require('ramda');
 
-// This file is meant for examples and tests
-// For custom usage you are meant to provide your own
-
-
 const mutations = {
   newElement: (state, {text, id}) => ({
     elements: merge(state.elements, { ...text, ...id }),
@@ -17,7 +13,5 @@ const defaultStore = {
   elementsIds: [],
 };
 
-module.export = {
-  mutations,
-  defaultStore
-}
+exports.defaultStore = defaultStore;
+exports.mutations = mutations;

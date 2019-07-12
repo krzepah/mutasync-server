@@ -46,8 +46,8 @@ const UserController = () => {
 
         if (bcryptService().comparePassword(password, user.password)) {
           const token = authService().issue({ id: user.id });
-
-          return res.status(200).json({ token, user });
+          const userData = JSON.parse(user.data);
+          return res.status(200).json({ token, user, ...userData });
         }
 
         return res.status(401).json({ msg: 'Unauthorized' });
@@ -83,12 +83,18 @@ const UserController = () => {
     }
   };
 
+  const getState = async (req, res) => {
+    const { id } = req.token;
+    const user = await User.findOne({ where: { ...id } });
+    return res.status(200).json({ ...JSON.parse(user.data) });
+  };
 
   return {
     register,
     login,
     validate,
     getAll,
+    getState,
   };
 };
 

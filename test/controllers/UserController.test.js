@@ -87,3 +87,30 @@ test('User | get all (auth)', async () => {
 
   await user.destroy();
 });
+
+test('User | get-state (auth)', async () => {
+  const user = await User.create({
+    email: 'martin@mail.com',
+    password: 'securepassword',
+  });
+
+  const res = await request(api)
+    .post('/public/login')
+    .set('Accept', /json/)
+    .send({
+      email: 'martin@mail.com',
+      password: 'securepassword',
+    })
+    .expect(200);
+
+  expect(res.body.token).toBeTruthy();
+
+  await request(api)
+    .get('/private/get-state')
+    .set('Accept', /json/)
+    .set('Authorization', `Bearer ${res.body.token}`)
+    .set('Content-Type', 'application/json')
+    .expect(200);
+
+  await user.destroy();
+});
