@@ -94,7 +94,7 @@ test('User | get-state (auth)', async () => {
     password: 'securepassword',
   });
 
-  const res = await request(api)
+  const login = await request(api)
     .post('/public/login')
     .set('Accept', /json/)
     .send({
@@ -103,17 +103,20 @@ test('User | get-state (auth)', async () => {
     })
     .expect(200);
 
-  await request(api)
+  const state = await request(api)
     .get('/private/get-state')
     .set('Accept', /json/)
-    .set('Authorization', `Bearer ${res.body.token}`)
+    .set('Authorization', `Bearer ${login.body.token}`)
     .set('Content-Type', 'application/json')
     .expect(200);
+
+  expect(state.body.elements).toEqual({ });
+  expect(state.body.elementsIds).toEqual([]);
 
   await user.destroy();
 });
 
-test('User | get-state (auth)', async () => {
+test('User | bulk-apply (auth)', async () => {
   const user = await User.create({
     email: 'martin@mail.com',
     password: 'securepassword',
