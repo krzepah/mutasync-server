@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const bcryptService = require('../services/bcrypt.service');
-
 const sequelize = require('../../config/database');
+const { defaultStore } = require('../../custom/mutations');
 
 const hooks = {
   beforeCreate(user) {
@@ -18,6 +18,10 @@ const User = sequelize.define('User', {
   },
   password: {
     type: Sequelize.STRING,
+  },
+  data: {
+    type: Sequelize.STRING,
+    defaultValue: JSON.stringify(defaultStore),
   },
 }, { hooks, tableName });
 

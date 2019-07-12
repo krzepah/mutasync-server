@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const authService = require('../services/auth.service');
 const bcryptService = require('../services/bcrypt.service');
+const { mutations } = require('../../custom/mutations');
+const { map } = require('ramda');
 
 const UserController = () => {
   const register = async (req, res) => {
@@ -42,8 +44,8 @@ const UserController = () => {
 
         if (bcryptService().comparePassword(password, user.password)) {
           const token = authService().issue({ id: user.id });
-
-          return res.status(200).json({ token, user });
+          const userData = JSON.parse(user.data);
+          return res.status(200).json({ token, user, ...userData });
         }
 
         return res.status(401).json({ msg: 'Unauthorized' });
@@ -79,12 +81,37 @@ const UserController = () => {
     }
   };
 
+  const getState = async (req, res) => {
+    const { id } = req.token;
+    const user = await User.findOne({ where: { ...id } });
+    return res.status(200).json({ ...JSON.parse(user.data) });
+  };
+
+  const bulkApply = async (req, res) => {
+    const { assign } = Object;
+    const { id } = req.token;
+    const user = await User.findOne({ where: { ...id } });
+    const { acts } = req.body;
+    let state = JSON.parse(user.data);
+
+    map((act) => {
+      const key = Object.keys(act)[0];
+      const update = mutations[key](state, act[key]);
+      state = assign(assign({}, state), update);
+    }, acts);
+
+    user.data = JSON.stringify(state);
+    user.save();
+    return res.status(200).json({ msg: 'Ok !' });
+  };
 
   return {
     register,
     login,
     validate,
     getAll,
+    getState,
+    bulkApply,
   };
 };
 
