@@ -3,8 +3,8 @@ const { merge, concat } = require('ramda');
 
 const mutations = {
   newElement: (state, {text, id}) => ({
-    elements: merge(state.elements, { ...text, ...id }),
-    elementsIds: concat([id], elementsIds),
+    elements: merge(state.elements, { [id]: { text: text, id: id } }),
+    elementsIds: concat([id], state.elementsIds),
   })
 };
 

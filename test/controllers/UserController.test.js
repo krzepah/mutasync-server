@@ -103,14 +103,52 @@ test('User | get-state (auth)', async () => {
     })
     .expect(200);
 
-  expect(res.body.token).toBeTruthy();
-
   await request(api)
     .get('/private/get-state')
     .set('Accept', /json/)
     .set('Authorization', `Bearer ${res.body.token}`)
     .set('Content-Type', 'application/json')
     .expect(200);
+
+  await user.destroy();
+});
+
+test('User | get-state (auth)', async () => {
+  const user = await User.create({
+    email: 'martin@mail.com',
+    password: 'securepassword',
+  });
+
+  const login = await request(api)
+    .post('/public/login')
+    .set('Accept', /json/)
+    .send({
+      email: 'martin@mail.com',
+      password: 'securepassword',
+    })
+    .expect(200);
+
+  await request(api)
+    .post('/private/apply')
+    .set('Accept', /json/)
+    .set('Authorization', `Bearer ${login.body.token}`)
+    .set('Content-Type', 'application/json')
+    .send({
+      acts: [
+        { newElement: { text: 'foo', id: 'bar' } },
+      ],
+    })
+    .expect(200);
+
+  const state = await request(api)
+    .get('/private/get-state')
+    .set('Accept', /json/)
+    .set('Authorization', `Bearer ${login.body.token}`)
+    .set('Content-Type', 'application/json')
+    .expect(200);
+
+  expect(state.body.elements).toEqual({ bar: { text: 'foo', id: 'bar' } });
+  expect(state.body.elementsIds).toEqual(['bar']);
 
   await user.destroy();
 });
