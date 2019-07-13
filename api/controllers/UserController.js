@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const authService = require('../services/auth.service');
 const bcryptService = require('../services/bcrypt.service');
+const cryptoService = require('../services/crypto.service');
 
 const UserController = () => {
   const register = async (req, res) => {
@@ -13,8 +14,7 @@ const UserController = () => {
           password: body.password,
         });
         const token = authService().issue({ id: user.id });
-
-        return res.status(200).json({ token, user });
+        return res.status(200).json({ token, user, refreshToken: user.refreshToken });
       } catch (err) {
         console.log(err);
         return res.status(500).json({ msg: 'Internal server error' });
@@ -25,35 +25,38 @@ const UserController = () => {
   };
 
   const login = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, refreshToken } = req.body;
+    let user;
 
-    if (email && password) {
-      try {
-        const user = await User
-          .findOne({
-            where: {
-              email,
-            },
-          });
-
-        if (!user) {
-          return res.status(400).json({ msg: 'Bad Request: User not found' });
+    if (email) {
+      if (password || refreshToken) {
+        try {
+          user = await User
+            .findOne({
+              where: {
+                email,
+              },
+            });
+          if (!user) {
+            return res.status(400).json({ msg: 'Bad Request: User not found' });
+          }
+        } catch (err) {
+          console.log(err);
+          return res.status(500).json({ msg: 'Internal server error' });
         }
 
-        if (bcryptService().comparePassword(password, user.password)) {
+        if ((password && bcryptService().comparePassword(password, user.password)) ||
+          (refreshToken && user.refreshToken === refreshToken)
+        ) {
           const token = authService().issue({ id: user.id });
-
-          return res.status(200).json({ token, user });
+          const newRefreshToken = cryptoService().generateRefreshToken();
+          user.refreshToken = newRefreshToken;
+          user.save();
+          return res.status(200).json({ token, user, refreshToken: newRefreshToken });
         }
-
-        return res.status(401).json({ msg: 'Unauthorized' });
-      } catch (err) {
-        console.log(err);
-        return res.status(500).json({ msg: 'Internal server error' });
       }
     }
-
-    return res.status(400).json({ msg: 'Bad Request: Email or password is wrong' });
+    return res.status(401).json({ msg: 'Unauthorized' });
   };
 
   const validate = (req, res) => {
