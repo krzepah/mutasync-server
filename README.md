@@ -1,6 +1,16 @@
+
 <p align="center">
   <img src="https://image.flaticon.com/icons/svg/123/123986.svg" width="300" height="300" alt="unistore">
 </p>
+
+<h1 align="center">Mutasync server</h1>
+
+<p align="center">
+  <a href="https://travis-ci.org/krzepah/mutasync-server">
+    <img src="https://badgen.now.sh/travis/krzepah/mutasync-server" alt="travis" />
+  </a>
+</p>
+
 
 # State Management Server
 > Saves your customers apps state
